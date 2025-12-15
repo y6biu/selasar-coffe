@@ -15,21 +15,7 @@
         <img src="selasar_logo_transp.png" alt="Selasar Coffe" class="logo-img" />
       </div>
 
-      
-    <nav class="nav">
-      <ul>
-        <li><a href="#orderSection">Pemesanan</a></li>
-        
-        <ul id="nav-list" class="nav-list">
-          <li><a href="#home">Home</a></li>
-          <li><a href="#menu">Menu</a></li>
-          <li><a href="#products">Products</a></li>
-          <li><a href="#gallery">Gallery</a></li>
-          <li><a href="#contact">Contact</a></li>
-        </ul>
-      
-      </ul>
-    
+      <nav class="nav">
         <ul id="nav-list" class="nav-list">
           <li><a href="#home">Home</a></li>
           <li><a href="#menu">Menu</a></li>
@@ -252,13 +238,26 @@
 
       <label for="product">Produk:</label>
       <select id="product" name="product" required>
-        <option value="kopi_susu">Kopi Susu</option>
-<option value="kopi_hitam">Kopi Hitam</option>
-<option value="cappuccino">Cappuccino</option>
-<option value="latte">Latte</option>
-<option value="teh">Teh</option>
-<option value="matcha">Matcha</option>
-<option value="susu_coklat">Susu Coklat</option>
+        <option value="kopi_basic">Kopi Basic - Rp 15.000</option>
+<option value="kopi_sejuta_umat">Kopi Sejuta Umat - Rp 15.000</option>
+<option value="kopi_vanilla">Kopi Vanilla - Rp 15.000</option>
+<option value="kopi_realita">Kopi Realita - Rp 15.000</option>
+<option value="kopi_hazel">Kopi Hazel - Rp 15.000</option>
+<option value="kopi_caramel">Kopi Caramel - Rp 15.000</option>
+<option value="kopi_moca">Kopi Moca - Rp 17.000</option>
+<option value="butterscotch">ButterScotch - Rp 17.000</option>
+<option value="vanilla_milk">Vanilla Milk - Rp 15.000</option>
+<option value="hazel_milk">Hazel Milk - Rp 15.000</option>
+<option value="butterscotch_milk">ButterScotch Milk - Rp 15.000</option>
+<option value="caramel_milk">Caramel Milk - Rp 15.000</option>
+<option value="burger">Burger - Rp 22.000</option>
+<option value="kebab_daging">Kebab Daging - Rp 18.000</option>
+<option value="kebab_ayam">Kebab Ayam - Rp 15.000</option>
+<option value="coklat_gemoy">Coklat Gemoy - Rp 17.000</option>
+<option value="susu_ijo">Susu Ijo - Rp 15.000</option>
+<option value="coklat_dari_surga">Coklat Dari Surga - Rp 18.000</option>
+<option value="coklat">Coklat - Rp 15.000</option>
+<option value="red_velvet">Red Velvet - Rp 15.000</option>
       </select>
 
       <label for="quantity">Jumlah:</label>
@@ -268,13 +267,15 @@
     </form>
   </section>
 
-  <!-- Payment Simulation Section -->
-  <section class="payment-section" id="paymentSection" style="display:none;">
-    <h2>Simulasi Pembayaran QRIS</h2>
-    <p>Scan QR code di bawah ini untuk menyelesaikan pembayaran:</p>
-    <img src="https://www.example.com/qris-simulator.png" alt="QRIS Simulator" id="qrisImage" />
-    <p>Total Pembayaran: <span id="totalPayment">Rp. 0</span></p>
-  </section>
+  <!-- Payment Simulation Section (Pop-up) -->
+  <div id="paymentPopup" style="display:none;">
+    <div class="popup-content">
+      <h2>Simulasi Pembayaran QRIS</h2>
+      <p>Total Pembayaran: <span id="totalPaymentPopup">Rp. 0</span></p>
+      <img src="https://www.example.com/qris-simulator.png" alt="QRIS Simulator" id="qrisImagePopup" />
+      <button id="nextButton">Next</button>
+    </div>
+  </div>
 
 </body>
 </html>
