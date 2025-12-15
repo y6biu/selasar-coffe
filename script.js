@@ -47,31 +47,3 @@ const io = new IntersectionObserver((entries)=>{
 },{ root:null, threshold:0.08, rootMargin:'0px 0px -10% 0px'});
 
 document.querySelectorAll('[data-anim]').forEach(el=> io.observe(el));
-
-// Handle order form submission
-document.getElementById('orderForm').addEventListener('submit', function(event) {
-    event.preventDefault();  // Prevent form from submitting the traditional way
-
-    // Get values from the form
-    const name = document.getElementById('name').value;
-    const product = document.getElementById('product').value;
-    const quantity = parseInt(document.getElementById('quantity').value);
-
-    // Set prices for each product (simulated, update with actual prices)
-    const prices = {
-        "kopi_susu": 25000,  // Price per item for Kopi Susu
-        "kopi_hitam": 20000, // Price per item for Kopi Hitam
-        "cappuccino": 30000, // Price per item for Cappuccino
-        "latte": 35000,      // Price per item for Latte
-        "teh": 15000,        // Price per item for Teh
-        "matcha": 20000,     // Price per item for Matcha
-        "susu_coklat": 22000 // Price per item for Susu Coklat
-    };
-
-    // Calculate total price
-    const totalPrice = prices[product] * quantity;
-
-    // Show payment section and update the total
-    document.getElementById('totalPayment').textContent = `Rp. ${totalPrice.toLocaleString()}`;
-    document.getElementById('paymentSection').style.display = 'block';
-});
