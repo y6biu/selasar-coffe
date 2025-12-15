@@ -57,13 +57,15 @@ document.getElementById('orderForm').addEventListener('submit', function(event) 
     const product = document.getElementById('product').value;
     const quantity = parseInt(document.getElementById('quantity').value);
 
-    // Set prices for each product (simulated, update this with actual prices)
+    // Set prices for each product (simulated, update with actual prices)
     const prices = {
-        kopi: 25000,  // Price per item for Kopi
-        teh: 15000,   // Price per item for Teh
-        susu: 20000,  // Price per item for Susu
-        cappuccino: 30000, // Price per item for Cappuccino
-        latte: 35000   // Price per item for Latte
+        "kopi_susu": 25000,  // Price per item for Kopi Susu
+        "kopi_hitam": 20000, // Price per item for Kopi Hitam
+        "cappuccino": 30000, // Price per item for Cappuccino
+        "latte": 35000,      // Price per item for Latte
+        "teh": 15000,        // Price per item for Teh
+        "matcha": 20000,     // Price per item for Matcha
+        "susu_coklat": 22000 // Price per item for Susu Coklat
     };
 
     // Calculate total price
