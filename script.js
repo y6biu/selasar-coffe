@@ -57,11 +57,13 @@ document.getElementById('orderForm').addEventListener('submit', function(event) 
     const product = document.getElementById('product').value;
     const quantity = parseInt(document.getElementById('quantity').value);
 
-    // Set prices for each product (simulated)
+    // Set prices for each product (simulated, update this with actual prices)
     const prices = {
         kopi: 25000,  // Price per item for Kopi
         teh: 15000,   // Price per item for Teh
-        susu: 20000   // Price per item for Susu
+        susu: 20000,  // Price per item for Susu
+        cappuccino: 30000, // Price per item for Cappuccino
+        latte: 35000   // Price per item for Latte
     };
 
     // Calculate total price
