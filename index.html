@@ -228,5 +228,35 @@
   </footer>
 
   <script src="script.js"></script>
+
+  <!-- Order Form -->
+  <section class="order-section">
+    <h2>Pesan Sekarang</h2>
+    <form id="orderForm" action="javascript:void(0)">
+      <label for="name">Nama:</label>
+      <input type="text" id="name" name="name" required>
+
+      <label for="product">Produk:</label>
+      <select id="product" name="product" required>
+        <option value="kopi">Kopi</option>
+        <option value="teh">Teh</option>
+        <option value="susu">Susu</option>
+      </select>
+
+      <label for="quantity">Jumlah:</label>
+      <input type="number" id="quantity" name="quantity" min="1" required>
+
+      <button type="submit" id="submitOrder">Pesan</button>
+    </form>
+  </section>
+
+  <!-- Payment Simulation Section -->
+  <section class="payment-section" id="paymentSection" style="display:none;">
+    <h2>Simulasi Pembayaran QRIS</h2>
+    <p>Scan QR code di bawah ini untuk menyelesaikan pembayaran:</p>
+    <img src="https://www.example.com/qris-simulator.png" alt="QRIS Simulator" id="qrisImage" />
+    <p>Total Pembayaran: <span id="totalPayment">Rp. 0</span></p>
+  </section>
+
 </body>
 </html>
