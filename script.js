@@ -213,6 +213,7 @@ function initCartModal(){
   const closeEls = document.querySelectorAll('[data-close="cart"]');
   const nameEl = document.getElementById('order-name');
   const noteEl = document.getElementById('order-note');
+  const waEl = document.getElementById('cart-wa');
 
   if(!modal || !fab) return;
 
@@ -236,6 +237,29 @@ function initCartModal(){
   clearBtn?.addEventListener('click', ()=>{ cart.clear(); renderCart(); });
   nameEl?.addEventListener('input', renderCart);
   noteEl?.addEventListener('input', renderCart);
+
+  // More reliable WhatsApp open behavior (mobile app fallback + web fallback)
+  waEl?.addEventListener('click', (e)=>{
+    if(waEl.classList.contains('disabled')){
+      e.preventDefault();
+      return;
+    }
+
+    const msg = buildWhatsAppMessage();
+    const waWeb = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
+    const waApp = `whatsapp://send?phone=${WA_NUMBER}&text=${encodeURIComponent(msg)}`;
+
+    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent || '');
+    if(isMobile){
+      // Try opening the WhatsApp app first, then fall back to wa.me
+      window.location.href = waApp;
+      setTimeout(()=>{ window.location.href = waWeb; }, 900);
+    }else{
+      // Desktop: open in a new tab
+      window.open(waWeb, '_blank', 'noopener');
+    }
+    e.preventDefault();
+  });
 }
 
 // init after DOM is ready
