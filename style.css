@@ -139,3 +139,114 @@ body{
   font-size: 1.05rem;
   opacity: 0.95;
 }
+
+/* =============================
+   WhatsApp Ordering (Cart)
+   ============================= */
+.order-hint{
+  margin: 8px 0 18px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: linear-gradient(90deg, rgba(191,167,111,0.12), rgba(191,167,111,0.04));
+  border: 1px solid rgba(0,0,0,0.04);
+  font-size: 14px;
+}
+
+.menu-category li.menu-item{
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 10px;
+}
+
+.add-btn{
+  background: rgba(191,167,111,0.18);
+  border: 1px solid rgba(0,0,0,0.06);
+  color: var(--text);
+  padding: 6px 10px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .15s;
+}
+.add-btn:hover{background: rgba(191,167,111,0.28)}
+
+.cart-fab{
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 1000;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,0.06);
+  background: var(--footer-ivory);
+  box-shadow: 0 14px 30px rgba(0,0,0,0.10);
+  cursor: pointer;
+}
+.cart-count{
+  display: inline-flex;
+  min-width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  background: rgba(191,167,111,0.35);
+  border: 1px solid rgba(0,0,0,0.06);
+  padding: 0 6px;
+}
+.cart-fab.has-items{background: linear-gradient(90deg, rgba(255,248,229,0.98), rgba(191,167,111,0.25))}
+
+.cart-modal{position: fixed; inset: 0; display:none; z-index: 1100}
+.cart-modal.open{display:block}
+.cart-backdrop{position:absolute; inset:0; background: rgba(0,0,0,0.35)}
+.cart-panel{
+  position: absolute;
+  right: 18px;
+  bottom: 18px;
+  width: min(520px, calc(100% - 36px));
+  max-height: min(76vh, 720px);
+  display:flex;
+  flex-direction: column;
+  background: var(--white);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.18);
+}
+.cart-head{display:flex;justify-content:space-between;align-items:center;padding:14px 14px;border-bottom:1px solid rgba(0,0,0,0.04)}
+.cart-head h3{font-size:16px}
+.icon-btn{background:transparent;border:0;font-size:18px;cursor:pointer;padding:6px 8px;border-radius:10px}
+.icon-btn:hover{background:rgba(0,0,0,0.05)}
+
+.cart-body{padding:12px 14px;overflow:auto}
+.cart-items{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
+.cart-row{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:10px;border:1px solid rgba(0,0,0,0.05);border-radius:12px;background: var(--bg)}
+.cart-row-name{font-weight:700}
+.cart-row-main{display:flex;flex-direction:column;gap:2px}
+.cart-row-qty{display:flex;align-items:center;gap:8px}
+.qty-btn{width:34px;height:34px;border-radius:10px;border:1px solid rgba(0,0,0,0.06);background:var(--white);cursor:pointer;font-size:18px;line-height:1}
+.qty-btn:hover{background:rgba(0,0,0,0.04)}
+.qty-val{min-width:20px;text-align:center;font-weight:700}
+.cart-empty{padding:10px 4px}
+
+.cart-form{display:grid;gap:10px}
+.field{display:grid;gap:6px}
+.field span{font-size:13px;color:rgba(0,0,0,0.65)}
+.field input{padding:10px 12px;border-radius:12px;border:1px solid rgba(0,0,0,0.08);outline:none}
+.field input:focus{border-color: rgba(191,167,111,0.7);box-shadow: 0 0 0 3px rgba(191,167,111,0.18)}
+
+.cart-foot{padding:12px 14px;border-top:1px solid rgba(0,0,0,0.04);display:flex;align-items:center;justify-content:space-between;gap:12px}
+.cart-total{display:flex;flex-direction:column;gap:2px}
+.cart-actions{display:flex;gap:10px;align-items:center}
+.cart-actions .btn{white-space:nowrap}
+.btn.disabled{pointer-events:none;opacity:0.55}
+
+body.no-scroll{overflow:hidden}
+
+@media (max-width:900px){
+  .cart-panel{right: 12px; bottom: 12px; width: calc(100% - 24px)}
+}

@@ -47,3 +47,200 @@ const io = new IntersectionObserver((entries)=>{
 },{ root:null, threshold:0.08, rootMargin:'0px 0px -10% 0px'});
 
 document.querySelectorAll('[data-anim]').forEach(el=> io.observe(el));
+
+
+// =============================
+// WhatsApp Ordering (Cart)
+// =============================
+// Target number: 081382118029 (Indonesia)
+const WA_NUMBER = '6281382118029';
+
+function parseRupiahToNumber(rpText){
+  // "Rp15.000" -> 15000
+  if(!rpText) return 0;
+  const digits = rpText.replace(/[^0-9]/g,'');
+  return digits ? Number(digits) : 0;
+}
+function formatRupiah(n){
+  // 15000 -> "Rp15.000"
+  try{
+    return 'Rp' + (n||0).toLocaleString('id-ID');
+  }catch{
+    return 'Rp' + String(n||0);
+  }
+}
+
+const cart = new Map(); // key: name|price, value: {name, price, qty}
+
+function cartKey(name, price){
+  return `${name}__${price}`;
+}
+
+function addToCart(item){
+  const key = cartKey(item.name, item.price);
+  const existing = cart.get(key);
+  if(existing){
+    existing.qty += 1;
+  }else{
+    cart.set(key, { ...item, qty: 1 });
+  }
+  renderCart();
+}
+
+function setQty(key, qty){
+  const it = cart.get(key);
+  if(!it) return;
+  it.qty = qty;
+  if(it.qty <= 0) cart.delete(key);
+  renderCart();
+}
+
+function getTotal(){
+  let total = 0;
+  cart.forEach(it=>{ total += (it.price * it.qty); });
+  return total;
+}
+
+function buildWhatsAppMessage(){
+  const name = (document.getElementById('order-name')?.value || '').trim();
+  const note = (document.getElementById('order-note')?.value || '').trim();
+
+  const lines = [];
+  lines.push('Halo Selasar Coffe, saya ingin pesan:');
+  cart.forEach(it=>{
+    lines.push(`- ${it.name} x${it.qty} (${formatRupiah(it.price)})`);
+  });
+  lines.push(`Total: ${formatRupiah(getTotal())}`);
+  if(name) lines.push(`Nama: ${name}`);
+  if(note) lines.push(`Catatan: ${note}`);
+  lines.push('Terima kasih.');
+
+  return lines.join('\n');
+}
+
+function renderCart(){
+  const countEl = document.getElementById('cart-count');
+  const itemsEl = document.getElementById('cart-items');
+  const totalEl = document.getElementById('cart-total');
+  const waEl = document.getElementById('cart-wa');
+  const fabEl = document.getElementById('cart-fab');
+
+  if(!countEl || !itemsEl || !totalEl || !waEl || !fabEl) return;
+
+  // count
+  let count = 0;
+  cart.forEach(it=>{ count += it.qty; });
+  countEl.textContent = String(count);
+  fabEl.classList.toggle('has-items', count > 0);
+
+  // list
+  itemsEl.innerHTML = '';
+
+  if(count === 0){
+    const empty = document.createElement('div');
+    empty.className = 'cart-empty';
+    empty.innerHTML = '<p class="muted">Keranjang masih kosong. Tambahkan menu dulu ya 🙂</p>';
+    itemsEl.appendChild(empty);
+  }else{
+    cart.forEach((it, key)=>{
+      const row = document.createElement('div');
+      row.className = 'cart-row';
+      row.innerHTML = `
+        <div class="cart-row-main">
+          <div class="cart-row-name">${it.name}</div>
+          <div class="cart-row-price muted">${formatRupiah(it.price)}</div>
+        </div>
+        <div class="cart-row-qty">
+          <button class="qty-btn" type="button" data-qty="dec" aria-label="Kurangi">−</button>
+          <span class="qty-val" aria-label="Jumlah">${it.qty}</span>
+          <button class="qty-btn" type="button" data-qty="inc" aria-label="Tambah">+</button>
+        </div>
+      `;
+      row.querySelector('[data-qty="dec"]').addEventListener('click', ()=> setQty(key, it.qty - 1));
+      row.querySelector('[data-qty="inc"]').addEventListener('click', ()=> setQty(key, it.qty + 1));
+      itemsEl.appendChild(row);
+    });
+  }
+
+  // total
+  totalEl.textContent = formatRupiah(getTotal());
+
+  // WhatsApp link
+  if(count === 0){
+    waEl.setAttribute('href', '#');
+    waEl.setAttribute('aria-disabled', 'true');
+    waEl.classList.add('disabled');
+  }else{
+    const msg = buildWhatsAppMessage();
+    const url = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
+    waEl.setAttribute('href', url);
+    waEl.removeAttribute('aria-disabled');
+    waEl.classList.remove('disabled');
+  }
+}
+
+function initMenuButtons(){
+  const menuLis = document.querySelectorAll('#menu .menu-category li');
+  if(!menuLis.length) return;
+
+  menuLis.forEach(li=>{
+    const spans = li.querySelectorAll('span');
+    if(spans.length < 2) return;
+    const name = spans[0].textContent.trim();
+    const priceText = spans[1].textContent.trim();
+    const price = parseRupiahToNumber(priceText);
+
+    // avoid double-init
+    if(li.querySelector('.add-btn')) return;
+
+    li.classList.add('menu-item');
+    li.dataset.name = name;
+    li.dataset.price = String(price);
+
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'add-btn';
+    btn.textContent = 'Tambah';
+    btn.addEventListener('click', ()=> addToCart({ name, price }));
+    li.appendChild(btn);
+  });
+}
+
+function initCartModal(){
+  const modal = document.getElementById('cart-modal');
+  const fab = document.getElementById('cart-fab');
+  const clearBtn = document.getElementById('cart-clear');
+  const closeEls = document.querySelectorAll('[data-close="cart"]');
+  const nameEl = document.getElementById('order-name');
+  const noteEl = document.getElementById('order-note');
+
+  if(!modal || !fab) return;
+
+  const open = ()=>{
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden','false');
+    document.body.classList.add('no-scroll');
+  };
+  const close = ()=>{
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden','true');
+    document.body.classList.remove('no-scroll');
+  };
+
+  fab.addEventListener('click', open);
+  closeEls.forEach(el=> el.addEventListener('click', close));
+  document.addEventListener('keydown', (e)=>{
+    if(e.key === 'Escape' && modal.classList.contains('open')) close();
+  });
+
+  clearBtn?.addEventListener('click', ()=>{ cart.clear(); renderCart(); });
+  nameEl?.addEventListener('input', renderCart);
+  noteEl?.addEventListener('input', renderCart);
+}
+
+// init after DOM is ready
+document.addEventListener('DOMContentLoaded', ()=>{
+  initMenuButtons();
+  initCartModal();
+  renderCart();
+});
